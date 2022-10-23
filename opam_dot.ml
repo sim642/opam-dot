@@ -18,7 +18,7 @@ module E = struct
   let to_string ((_, fml) : t) =
     Ofml.string_of_formula (fun (rel, v) ->
         Printf.sprintf "%s %s"
-          (OpamPrinter.relop rel)
+          (OpamPrinter.FullPos.relop_kind rel)
           (Opkg.Version.to_string v)) fml
 end
 
@@ -118,7 +118,7 @@ let with_opam f =
   let root = OpamStateConfig.opamroot () in
   OpamFormatConfig.init () ;
   let _config = OpamStateConfig.load_defaults root in
-  OpamStd.Config.init () ;
+  OpamCoreConfig.init () ;
   OpamRepositoryConfig.init () ;
   OpamStateConfig.init ~root_dir:root () ;
   OpamGlobalState.with_ `Lock_none @@ fun gt ->
