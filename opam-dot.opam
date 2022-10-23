@@ -10,11 +10,24 @@ license: "MIT"
 version: "dev"
 flags: plugin
 build: [
-  ["jbuilder" "build" "-j" jobs "@install"]
+  ["dune" "subst"] {dev}
+  [
+    "dune"
+    "build"
+    "-p"
+    name
+    "-j"
+    jobs
+    "--promote-install-files=false"
+    "@install"
+    "@runtest" {with-test}
+    "@doc" {with-doc}
+  ]
+  ["dune" "install" "-p" name "--create-install-files" name]
 ]
 depends: [
   "ocamlfind" {build}
-  "jbuilder" {build}
+  "dune" {build}
   "opam-state" {>= "2.0.1"}
   "bos"
 ]
